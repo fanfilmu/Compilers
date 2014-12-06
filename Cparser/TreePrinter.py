@@ -37,6 +37,7 @@ class TreePrinter:
     def printTree(self):
         return "ARG {0}".format(self.id)
 
+
     @addToClass(AST.CompoundInstruction)
     def printTree(self):
         result = str(self.decList)
@@ -85,6 +86,14 @@ class TreePrinter:
         result += TreePrinter.addLevel(self.instructions)
         return result
 
+    @addToClass(AST.RepeatLoopInstruction)
+    def printTree(self):
+        result = "REPEAT\n"
+        result += TreePrinter.addLevel(self.instructions)+"\n"
+        result += "UNTIL\n"
+        result += TreePrinter.addLevel(self.condition)
+        return result
+
     @addToClass(AST.Declaration)
     def printTree(self):
         result = "DECL\n"
@@ -96,3 +105,24 @@ class TreePrinter:
         result = self.value
         return result
 
+    @addToClass(AST.BreakInstruction)
+    def printTree(self):
+        return "BREAK\n"
+
+    @addToClass(AST.ContinueInstruction)
+    def printTree(self):
+        return "CONTINUE\n"
+
+    @addToClass(AST.IfInstruction)
+    def printTree(self):
+        result = "IF\n"
+        result += TreePrinter.addLevel(self.condition) + '\n'
+        result += TreePrinter.addLevel(self.instruction)
+        return result
+
+    @addToClass(AST.LabeledInstruction)
+    def printTree(self):
+        result = "LABEL "
+        result += self.label+"\n"
+        result += TreePrinter.addLevel(self.instruction)
+        return result
