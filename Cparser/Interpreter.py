@@ -75,9 +75,9 @@ class Interpreter(object):
 
     @when(AST.Assignment)
     def visit(self, node, scope="main"):
-        if node.left in self.memory_stack[scope].keys():
+        if node.left in self.memory_stack[scope].scope_keys():
             value = node.right.accept(self, scope)
-            self.memory_stack[scope][node.left] = value
+            self.memory_stack[scope].scope_setitem(node.left, value)
             return value
         else:
             raise Exception("Undeclared variable {0}".format(node.left))

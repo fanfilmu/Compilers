@@ -20,6 +20,10 @@ class TreePrinter:
     def printTree(self):
         raise Exception("printTree not defined in class " + self.__class__.__name__)
 
+    @addToClass(AST.Program)
+    def printTree(self):
+        return str(self.declarations) + str(self.fundefs) + str(self.instructions)
+
     @addToClass(AST.List)
     def printTree(self):
         return '\n'.join(map(str, self.elements))
@@ -40,7 +44,7 @@ class TreePrinter:
 
     @addToClass(AST.CompoundInstruction)
     def printTree(self):
-        result = str(self.decList)
+        result = str(self.decList) + "\n"
         result += str(self.incList)
         return result
 
@@ -105,13 +109,18 @@ class TreePrinter:
         result = self.value
         return result
 
+    @addToClass(AST.ID)
+    def printTree(self):
+        result = self.id
+        return result
+
     @addToClass(AST.BreakInstruction)
     def printTree(self):
-        return "BREAK\n"
+        return "BREAK"
 
     @addToClass(AST.ContinueInstruction)
     def printTree(self):
-        return "CONTINUE\n"
+        return "CONTINUE"
 
     @addToClass(AST.IfInstruction)
     def printTree(self):

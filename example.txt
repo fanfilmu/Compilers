@@ -1,72 +1,44 @@
-int max = 15;
-int i = 0;
+int x = 0;
 
 
-int fib_iter(int n) {
-
-int i = 0;
-
-    if(n <= 0) {
-        return 0;
-    }
-    if(n == 1) {
-        return 1;
-    }
-    else
-    {
-        int a = 0, b = 1, sum = 0, i = 0;
-        while(i < (n-1)) {
-            sum = a + b;
-            a = b;
-            b = sum;
-            i = i+1;
-        }
-        return sum;
-    }
+int primes(int maxprime) {
+	int i = 3, j = 0;
+	
+	if(maxprime > 2) {
+		print 2;
+	}
+	
+	while(1) {
+		j = 2;
+		while(j < i) {
+			if(i % j == 0) {
+				# Break - composite number
+				break;
+			}
+			
+			j = j + 1;
+		}
+		
+		if(i == j) {
+			# We have prime!
+			print i;
+		}
+		
+		i = i + 1;
+		
+		# Check condition and act accordingly
+		if(i < maxprime) {
+			continue;
+		} else {
+			break;
+		}
+		
+		# This should never happen
+		print "Error!";
+	}
 }
 
+print "Primes up to 100...";
+x = primes(100);
 
-int fib(int n) {
-    if(n <= 0) {
-        return 0;
-    }
-    if(n == 1) {
-        return 1;
-    } 
-    else {
-        return fib(n-1) + fib(n-2);
-    }
-}
-
-
-int trib(int n) {
-    if(n <= 1) {
-        return 0;
-    }
-    if(n == 2) {
-        return 1;
-    } 
-    else {
-        return trib(n-1) + trib(n-2) + trib(n-3);
-    }
-}
-
-
-i = 0;
-while (i <= max ) {
-    print fib(i);
-    i = i + 1;
-}
-
-i = 0;
-while(i <= max) {
-    print fib_iter(i);
-    i = i+1;
-}
-
-i = 0;
-while(i <= max) {
-    print trib(i);
-    i = i+1;
-}
 

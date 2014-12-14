@@ -6,19 +6,26 @@ class Memory(dict):
         self.parent_scope = parent_scope
 
     def __getitem__(self, item):
-        try:
-            value = super(Memory, self).__getitem__(item)
-        except KeyError:
-            if self.parent_scope:
-                value = self.parent_scope[item]
-                if value:
-                    self.__setitem__(item, value)
-            else:
-                value = None
-                self.__setitem__(item, None)
+        if item in self.full_scope().keys():
+            return self.full_scope()[item]
+        else:
+            return None
 
-        return value
+    def scope_setitem(self, key, value):
+        if key in self.keys():
+            self[key] = value
+        elif self.parent_scope is not None:
+            self.parent_scope.scope_setitem(key, value)
+        else:
+            self[key] = value
 
+    def full_scope(self):
+        parent_full_scope = ((self.parent_scope is not None) and self.parent_scope.full_scope().items()) or []
+        return dict(parent_full_scope + self.items())
+
+
+    def scope_keys(self):
+        return self.full_scope().keys()
 
 class MemoryStack(dict):
     pass
