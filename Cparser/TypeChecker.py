@@ -31,6 +31,9 @@ class NodeVisitor(object):
 
 class TypeChecker(NodeVisitor):
 
+    def visit_Program(self, node):
+        pass
+
     def visit_BinExpr(self, node):
                                           # alternative usage,
                                           # requires definition of accept method in class Node

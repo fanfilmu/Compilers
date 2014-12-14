@@ -2,6 +2,9 @@ class Node(object):
     def __str__(self):
         return self.printTree()
 
+    def accept(self, visitor, scope="main"):
+        return visitor.visit(self, scope)
+
 class Program(Node):
     def __init__(self,decl,fundef,instr):
         self.declarations = decl
@@ -29,6 +32,9 @@ class Assignment(BinExpr):
 class List(Node):
     def __init__(self, elements):
         self.elements = elements
+
+    def __len__(self):
+        return len(self.elements)
 
     def add(self, element):
         if isinstance(element, List):
@@ -71,8 +77,9 @@ class Float(Const):
 class String(Const):
     pass
 
-class ID(Const):
-    pass
+class ID(Node):
+    def __init__(self, id):
+        self.id = id
 
 class ExpressionList(List):
     pass
@@ -86,6 +93,9 @@ class Function(Node):
         self.arglist = arglist
         self.id = id
         self.retType = retType
+
+    def arity(self):
+        return len(self.arglist)
 
 class Variable(Node):
     def __init__(self, type, id):
