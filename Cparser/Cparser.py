@@ -37,7 +37,7 @@ class Cparser(object):
 
     def p_program(self, p):
         """program : declarations fundefs instructions"""
-        p[0] = (p[1], p[2], p[3])
+        p[0] = AST.Program(p[1], p[2], p[3])
 
     def p_declarations(self, p):
         """declarations : declarations declaration
