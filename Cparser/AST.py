@@ -13,6 +13,9 @@ class BinExpr(Node):
         self.left = left
         self.right = right
 
+class RelExpr(BinExpr):
+    pass
+
 class Assignment(BinExpr):
     def __init__(self, left, right):
         BinExpr.__init__(self, '=', left, right)

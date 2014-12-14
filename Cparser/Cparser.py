@@ -162,6 +162,17 @@ class Cparser(object):
         """expression : ID"""
         p[0] = AST.ID(p[1])
 
+    def p_relexpression(self,p):
+        """expression : expression AND expression
+                      | expression OR expression
+                      | expression EQ expression
+                      | expression NEQ expression
+                      | expression '>' expression
+                      | expression '<' expression
+                      | expression LE expression
+                      | expression GE expression """
+        p[0] = AST.RelExpr(p[2],p[1],p[3])
+
     def p_expression(self, p):
         """expression : expression '+' expression
                       | expression '-' expression
@@ -171,16 +182,8 @@ class Cparser(object):
                       | expression '|' expression
                       | expression '&' expression
                       | expression '^' expression
-                      | expression AND expression
-                      | expression OR expression
                       | expression SHL expression
                       | expression SHR expression
-                      | expression EQ expression
-                      | expression NEQ expression
-                      | expression '>' expression
-                      | expression '<' expression
-                      | expression LE expression
-                      | expression GE expression
                       | '(' expression ')'
                       | '(' error ')'
                       | ID '(' expr_list_or_empty ')'
