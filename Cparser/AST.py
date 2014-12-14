@@ -2,6 +2,12 @@ class Node(object):
     def __str__(self):
         return self.printTree()
 
+class Program(Node):
+    def __init__(self,decl,fundef,instr):
+        self.declarations = decl
+        self.fundefs = fundef
+        self.instructions = instr
+
 class FunctionCall(Node):
     def __init__(self, id, arglist):
         self.id = id
@@ -12,6 +18,9 @@ class BinExpr(Node):
         self.op = op
         self.left = left
         self.right = right
+
+class RelExpr(BinExpr):
+    pass
 
 class Assignment(BinExpr):
     def __init__(self, left, right):

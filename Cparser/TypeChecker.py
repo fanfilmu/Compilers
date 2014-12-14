@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import AST
 
 class NodeVisitor(object):
 
@@ -48,7 +49,11 @@ class TypeChecker(NodeVisitor):
     def visit_Integer(self, node):
         return 'int'
 
-    #def visit_Float(self, node):
+    def visit_Float(self, node):
+        return 'float'
+
+    def visit_String(self,node):
+        return 'string'
     # ... 
     # 
 
