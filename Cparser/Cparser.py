@@ -38,6 +38,7 @@ class Cparser(object):
     def p_program(self, p):
         """program : declarations fundefs instructions"""
         p[0] = AST.Program(p[1], p[2], p[3])
+        p[0].setLineNo(p.lineno(1))
 
     def p_declarations(self, p):
         """declarations : declarations declaration
@@ -51,7 +52,9 @@ class Cparser(object):
         """declaration : TYPE inits ';' 
                        | error ';' """
         if len(p) == 4:
+            p[2].addType(p[1])
             p[0] = AST.Declaration(p[1], p[2])
+            p[0].setLineNo(p.lineno(1))
         else:
             p[0] = None
 
@@ -66,6 +69,7 @@ class Cparser(object):
     def p_init(self, p):
         """init : ID '=' expression """
         p[0] = AST.Init(p[1], p[3])
+        p[0].setLineNo(p.lineno(1))
 
     def p_instructions(self, p):
         """instructions : instructions instruction
@@ -92,14 +96,17 @@ class Cparser(object):
         """print_instr : PRINT expression ';'
                        | PRINT error ';' """
         p[0] = AST.PrintInstruction(p[2])
+        p[0].setLineNo(p.lineno(1))
 
     def p_labeled_instr(self, p):
         """labeled_instr : ID ':' instruction """
         p[0] = AST.LabeledInstruction(p[1], p[3])
+        p[0].setLineNo(p.lineno(1))
 
     def p_assignment(self, p):
         """assignment : ID '=' expression ';' """
         p[0] = AST.Assignment(p[1], p[3])
+        p[0].setLineNo(p.lineno(1))
 
     def p_choice_instr(self, p):
         """choice_instr : IF '(' condition ')' instruction  %prec IFX
@@ -108,29 +115,36 @@ class Cparser(object):
                         | IF '(' error ')' instruction ELSE instruction """
         if len(p) == 6:
             p[0] = AST.IfInstruction(p[3], p[5])
+            p[0].setLineNo(p.lineno(1))
         else:
             p[0] = AST.IfElseInstruction(p[3], p[5], p[7])
+            p[0].setLineNo(p.lineno(1))
 
     def p_while_instr(self, p):
         """while_instr : WHILE '(' condition ')' instruction
                        | WHILE '(' error ')' instruction """
         p[0] = AST.WhileLoopInstruction(p[3], p[5])
+        p[0].setLineNo(p.lineno(1))
 
     def p_repeat_instr(self, p):
         """repeat_instr : REPEAT instructions UNTIL condition ';' """
         p[0] = AST.RepeatLoopInstruction(p[4], p[2])
+        p[0].setLineNo(p.lineno(1))
 
     def p_return_instr(self, p):
         """return_instr : RETURN expression ';' """
         p[0] = AST.ReturnInstruction(p[2])
+        p[0].setLineNo(p.lineno(1))
 
     def p_continue_instr(self, p):
         """continue_instr : CONTINUE ';' """
         p[0] = AST.ContinueInstruction()
+        p[0].setLineNo(p.lineno(1))
 
     def p_break_instr(self, p):
         """break_instr : BREAK ';' """
         p[0] = AST.BreakInstruction()
+        p[0].setLineNo(p.lineno(1))
 
     def p_compound_instr(self, p):
         """compound_instr : '{' declarations instructions '}' """
@@ -140,27 +154,33 @@ class Cparser(object):
     def p_condition(self, p):
         """condition : expression"""
         p[0] = p[1]
+        p[0].setLineNo(p.lineno(1))
 
     def p_const_int(self, p):
         """const : INTEGER"""
         p[0] = AST.Integer(p[1])
+        p[0].setLineNo(p.lineno(1))
 
     def p_const_float(self, p):
         """const : FLOAT"""
         p[0] = AST.Float(p[1])
+        p[0].setLineNo(p.lineno(1))
 
     def p_const_str(self, p):
         """const : STRING"""
         p[0] = AST.String(p[1])
+        p[0].setLineNo(p.lineno(1))
 
 
     def p_expression_const(self, p):
         """expression : const"""
         p[0] = p[1]
+        p[0].setLineNo(p.lineno(1))
 
     def p_expression_id(self, p):
         """expression : ID"""
         p[0] = AST.ID(p[1])
+        p[0].setLineNo(p.lineno(1))
 
     def p_relexpression(self,p):
         """expression : expression AND expression
@@ -172,6 +192,7 @@ class Cparser(object):
                       | expression LE expression
                       | expression GE expression """
         p[0] = AST.RelExpr(p[2],p[1],p[3])
+        p[0].setLineNo(p.lineno(1))
 
     def p_expression(self, p):
         """expression : expression '+' expression
@@ -193,8 +214,10 @@ class Cparser(object):
                 p[0] = p[2]
             else:
                 p[0] = AST.BinExpr(p[2], p[1], p[3])
+                p[0].setLineNo(p.lineno(1))
         else:
             p[0] = AST.FunctionCall(AST.ID(p[1]), p[3])
+            p[0].setLineNo(p.lineno(1))
 
     def p_expr_list_or_empty(self, p):
         """expr_list_or_empty : expr_list
@@ -223,6 +246,7 @@ class Cparser(object):
     def p_fundef(self, p):
         """fundef : TYPE ID '(' args_list_or_empty ')' compound_instr """
         p[0] = AST.Function(p[1], p[2], p[4], p[6])
+        p[0].setLineNo(p.lineno(1))
 
 
     def p_args_list_or_empty(self, p):
@@ -244,6 +268,7 @@ class Cparser(object):
     def p_arg(self, p):
         """arg : TYPE ID """
         p[0] = AST.Argument(p[1], p[2])
+        p[0].setLineNo(p.lineno(1))
 
     
 

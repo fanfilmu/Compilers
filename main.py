@@ -22,9 +22,9 @@ if __name__ == '__main__':
     result = parser.parse(text, lexer=c_parser.scanner)
 
     typeChecker = TypeChecker()
-    typeChecker.visit(result)   # or alternatively ast.accept(typeChecker)
-
-    print(result[0])
-    print(result[1])
-    print(result[2])
+    typeChecker.visit(result,None)   # or alternatively ast.accept(typeChecker)
+    #
+    print(result)
+    # print(result.fundefs)
+    # print(result.instructions)
 
