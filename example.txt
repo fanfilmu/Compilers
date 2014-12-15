@@ -1,11 +1,13 @@
-
 float d = 0, b = 0, c = 0;
 int a = 1;
 
 int gcd(int m, int n) {
     int d = 0;
-    d = gcd(3,4);
+    b = gcd(3,4);
+    b = gcd(3,5);
     return m;
 }
+
+
 
 print b;

@@ -171,7 +171,6 @@ class Cparser(object):
         p[0] = AST.String(p[1])
         p[0].setLineNo(p.lineno(1))
 
-
     def p_expression_const(self, p):
         """expression : const"""
         p[0] = p[1]
@@ -212,6 +211,7 @@ class Cparser(object):
         if len(p) == 4:
             if p[1] == '(':
                 p[0] = p[2]
+                p[0].setLineNo(p.lineno(1))
             else:
                 p[0] = AST.BinExpr(p[2], p[1], p[3])
                 p[0].setLineNo(p.lineno(1))

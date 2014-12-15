@@ -49,7 +49,7 @@ class TreePrinter:
 
     @addToClass(AST.CompoundInstruction)
     def printTree(self):
-        result = str(self.decList)+"\n"
+        result = str(self.decList)
         result += str(self.incList)
         return result
 

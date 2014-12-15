@@ -177,13 +177,15 @@ class TypeChecker(NodeVisitor):
         self.visit(node.condition,symbols)
 
     def visit_IfInstruction(self,node,symbols):
-        self.visit(node.instruction,symbols)
         self.visit(node.condition,symbols)
+        self.visit(node.instruction,symbols)
+
 
     def visit_IfElseInstruction(self,node,symbols):
-        self.visit(node.instruction,symbols)
+        node.condition.lineno = node.lineno
         self.visit(node.condition,symbols)
-        self.visit(node.no_condition,symbols)
+        self.visit(node.instruction,symbols)
+        self.visit(node.no_instruction,symbols)
 
     def visit_Assignment(self,node,symbols):
         try:
