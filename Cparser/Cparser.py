@@ -151,7 +151,7 @@ class Cparser(object):
     def p_condition(self, p):
         """condition : expression"""
         p[0] = p[1]
-        p[0].setLineNo(p.lineno(1))
+        p[0].setLineNo(p[1].lineno)
 
     def p_const_int(self, p):
         """const : INTEGER"""

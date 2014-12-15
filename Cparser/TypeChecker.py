@@ -2,7 +2,7 @@
 import AST
 import SymbolTable
 from collections import defaultdict
-
+from random import Random
 
 ttype = defaultdict(lambda: defaultdict(lambda: defaultdict(None)))
 ttype['+']['int']['int'] = 'int'
@@ -134,7 +134,7 @@ class TypeChecker(NodeVisitor):
 
     def visit_Function(self, node, symbols):
         argList = []
-        funSymbols = SymbolTable.SymbolTable(symbols, node.id)
+        funSymbols = SymbolTable.SymbolTable(symbols, "function")
         for arg in node.arglist.elements:
             a = self.visit(arg, funSymbols)
             argList.append(a)
@@ -154,9 +154,13 @@ class TypeChecker(NodeVisitor):
         return node.id, node.type
 
     def visit_CompoundInstruction(self, node, symbols):
-        # TODO add new scope
-        self.visit(node.decList, symbols)
-        self.visit(node.incList, symbols)
+        if symbols.name == "function":
+            symbolscope = symbols
+        else:
+            symbolscope = SymbolTable.SymbolTable(symbols, "compinst")
+
+        self.visit(node.decList, symbolscope)
+        self.visit(node.incList, symbolscope)
 
     def visit_InstructionList(self, node, symbols):
         for inst in node.elements:
@@ -177,7 +181,7 @@ class TypeChecker(NodeVisitor):
         self.visit(node.instruction, symbols)
 
     def visit_IfElseInstruction(self, node, symbols):
-        node.condition.lineno = node.lineno
+        #node.condition.lineno = node.lineno
         self.visit(node.condition, symbols)
         self.visit(node.instruction, symbols)
         self.visit(node.no_instruction, symbols)
