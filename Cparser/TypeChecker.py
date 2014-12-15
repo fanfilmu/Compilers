@@ -142,9 +142,6 @@ class TypeChecker(NodeVisitor):
         for arg in node.arglist.elements:
             a = self.visit(arg,funSymbols)
             argList.append(a)
-            # funSymbols.put(a[0],SymbolTable.Symbol(a[0],a[1]))
-
-        self.visit(node.body,funSymbols)
 
         if node.id in symbols.symbols.keys():
             error_str = "Semantic error at line {0}\n"
@@ -152,6 +149,8 @@ class TypeChecker(NodeVisitor):
         else:
             symbol = SymbolTable.FunctionSymbol(node.id,node.retType,dict(argList))
             symbols.put(node.id,symbol)
+
+        self.visit(node.body,funSymbols)
 
 
     def visit_Argument(self,node,symbols):
