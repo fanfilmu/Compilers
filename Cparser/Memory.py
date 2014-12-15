@@ -1,5 +1,6 @@
 class Memory(dict):
     def __init__(self, parent_scope=None):
+        super(Memory, self).__init__()
         self.parent_scope = parent_scope
 
     def __getitem__(self, item):

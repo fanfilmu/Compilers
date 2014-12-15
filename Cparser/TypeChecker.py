@@ -68,7 +68,7 @@ class NodeVisitor(object):
         #             self.visit(child,symbols)
 
         # simpler version of generic_visit, not so general
-        #def generic_visit(self, node):
+        # def generic_visit(self, node):
         #    for child in node.children:
         #        self.visit(child)
 
@@ -148,13 +148,13 @@ class TypeChecker(NodeVisitor):
 
         self.visit(node.body, funSymbols)
 
-
     def visit_Argument(self, node, symbols):
         symbol = SymbolTable.Symbol(node.id, node.type)
         symbols.put(node.id, symbol)
-        return (node.id, node.type)
+        return node.id, node.type
 
     def visit_CompoundInstruction(self, node, symbols):
+        # TODO add new scope
         self.visit(node.decList, symbols)
         self.visit(node.incList, symbols)
 
@@ -176,7 +176,6 @@ class TypeChecker(NodeVisitor):
         self.visit(node.condition, symbols)
         self.visit(node.instruction, symbols)
 
-
     def visit_IfElseInstruction(self, node, symbols):
         node.condition.lineno = node.lineno
         self.visit(node.condition, symbols)
@@ -192,7 +191,7 @@ class TypeChecker(NodeVisitor):
             return None
 
     def visit_ID(self, node, symbols):
-        if (symbols.get(node.id)):
+        if symbols.get(node.id):
             return symbols.get(node.id).type
         else:
             error_str = "Semantic error at line {0}\n"
@@ -212,7 +211,6 @@ class TypeChecker(NodeVisitor):
             return symbols.get(str(node.id)).type
         else:
             return False
-
 
     def visit_Integer(self, node, symbols):
         return 'int'

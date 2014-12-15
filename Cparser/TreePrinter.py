@@ -12,6 +12,9 @@ def addToClass(cls):
 
 
 class TreePrinter:
+    def __init__(self):
+        pass
+
     @staticmethod
     def addLevel(object):
         return "| " + "\n| ".join(str(object).split('\n'))

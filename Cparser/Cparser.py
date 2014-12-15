@@ -26,14 +26,12 @@ class Cparser(object):
         ("left", '*', '/', '%'),
     )
 
-
     def p_error(self, p):
         if p:
             error_str = "Syntax error at line {0}, column {1}: LexToken({2}, '{3}')"
             print(error_str.format(p.lineno, self.scanner.find_tok_column(p), p.type, p.value))
         else:
             print('At end of input')
-
 
     def p_program(self, p):
         """program : declarations fundefs instructions"""
@@ -149,7 +147,6 @@ class Cparser(object):
     def p_compound_instr(self, p):
         """compound_instr : '{' declarations instructions '}' """
         p[0] = AST.CompoundInstruction(p[2], p[3])
-
 
     def p_condition(self, p):
         """condition : expression"""

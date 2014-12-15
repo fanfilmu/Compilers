@@ -30,7 +30,7 @@ class SymbolTable(object):
         try:
             return self.symbols[name]
         except KeyError:
-            return (self.parent and self.parent.get(name))
+            return self.parent and self.parent.get(name)
 
 
 
