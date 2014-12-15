@@ -1,7 +1,4 @@
-
-
 class Memory(dict):
-
     def __init__(self, parent_scope=None):
         self.parent_scope = parent_scope
 
@@ -26,6 +23,7 @@ class Memory(dict):
 
     def scope_keys(self):
         return self.full_scope().keys()
+
 
 class MemoryStack(dict):
     pass

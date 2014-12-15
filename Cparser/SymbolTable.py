@@ -2,33 +2,31 @@
 
 
 class Symbol(object):
-    def __init__(self,name,type):
+    def __init__(self, name, type):
         self.name = name
         self.type = type
+
 
 class VariableSymbol(Symbol):
     pass
 
 
 class FunctionSymbol(Symbol):
-    def __init__(self,name,type,arguments):
-        Symbol.__init__(self,name,type)
+    def __init__(self, name, type, arguments):
+        Symbol.__init__(self, name, type)
         self.arguments = arguments
 
 
-
-
 class SymbolTable(object):
-
-    def __init__(self, parent, name): # parent scope and symbol table name
+    def __init__(self, parent, name):  # parent scope and symbol table name
         self.parent = parent
         self.name = name
-        self.symbols={}
+        self.symbols = {}
 
-    def put(self, name, symbol): # put variable symbol or fundef under <name> entry
+    def put(self, name, symbol):  # put variable symbol or fundef under <name> entry
         self.symbols[name] = symbol
 
-    def get(self, name): # get variable symbol or fundef from <name> entry
+    def get(self, name):  # get variable symbol or fundef from <name> entry
         try:
             return self.symbols[name]
         except KeyError:

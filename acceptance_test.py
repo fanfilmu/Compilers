@@ -2,6 +2,7 @@
 import unittest
 import os
 
+
 class AcceptanceTests(unittest.TestCase):
     @classmethod
     def add_test(cls, dirpath, filename):
@@ -15,7 +16,7 @@ class AcceptanceTests(unittest.TestCase):
 
         def test_func(self):
             print("RUNNING TEST tests\\{}".format(filename))
-            os.system("python main.py tests\\{0} > tests\\{1}.actual".format(filename,name))
+            os.system("python main.py tests\\{0} > tests\\{1}.actual".format(filename, name))
             diff = os.system("fc tests\\{0}.actual tests\\{0}.expected > NUL".format(name))
             self.assertFalse(diff, "files {0}.actual and {0}.expected differ".format(name))
 
@@ -29,7 +30,8 @@ class AcceptanceTests(unittest.TestCase):
                 if filename.startswith('.'):
                     continue
                 elif filename.endswith('.in'):
-                    cls.add_test(dirpath,filename)
+                    cls.add_test(dirpath, filename)
+
 
 if __name__ == '__main__':
     AcceptanceTests.add_tests('tests/')

@@ -181,7 +181,7 @@ class Cparser(object):
         p[0] = AST.ID(p[1])
         p[0].setLineNo(p.lineno(1))
 
-    def p_relexpression(self,p):
+    def p_relexpression(self, p):
         """expression : expression AND expression
                       | expression OR expression
                       | expression EQ expression
@@ -190,7 +190,7 @@ class Cparser(object):
                       | expression '<' expression
                       | expression LE expression
                       | expression GE expression """
-        p[0] = AST.RelExpr(p[2],p[1],p[3])
+        p[0] = AST.RelExpr(p[2], p[1], p[3])
         p[0].setLineNo(p.lineno(1))
 
     def p_expression(self, p):

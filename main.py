@@ -1,4 +1,3 @@
-
 import sys
 import ply.yacc as yacc
 import Cparser.TreePrinter
@@ -22,7 +21,7 @@ if __name__ == '__main__':
     result = parser.parse(text, lexer=c_parser.scanner)
 
     typeChecker = TypeChecker()
-    typeChecker.visit(result,None)   # or alternatively ast.accept(typeChecker)
+    typeChecker.visit(result, None)  # or alternatively ast.accept(typeChecker)
 
     result.accept(Interpreter())
 
