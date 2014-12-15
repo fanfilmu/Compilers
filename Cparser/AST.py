@@ -2,6 +2,9 @@ class Node(object):
     def __str__(self):
         return self.printTree()
 
+    def setLineNo(self, line):
+        self.lineno = line
+
     def accept(self, visitor, scope="main"):
         return visitor.visit(self, scope)
 
@@ -50,10 +53,16 @@ class Declaration(Node):
         self.initList = initList
 
 class InitList(List):
-    pass
+    def addType(self,type):
+        for e in self.elements:
+            e.addType(type)
 
 class Init(Assignment):
-    pass
+    def __init__(self, left, right):
+        BinExpr.__init__(self, '=', left, right)
+
+    def addType(self,type):
+        self.type = type
 
 class FunList(List):
     pass

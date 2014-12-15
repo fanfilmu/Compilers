@@ -37,6 +37,15 @@ class TreePrinter:
         result += TreePrinter.addLevel(self.body)
         return result
 
+    @addToClass(AST.Program)
+    def printTree(self):
+        result = str(self.declarations)+ '\n'
+        if  len(self.fundefs.elements):
+            result += str(self.fundefs)+ '\n'
+        if len(self.instructions.elements):
+            result += str(self.instructions)+ '\n'
+        return result
+
     @addToClass(AST.Argument)
     def printTree(self):
         return "ARG {0}".format(self.id)
