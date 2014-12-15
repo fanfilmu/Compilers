@@ -177,14 +177,16 @@ class TypeChecker(NodeVisitor):
         self.visit(node.condition, symbols)
 
     def visit_IfInstruction(self, node, symbols):
+        new_scope = SymbolTable.SymbolTable(symbols, "compinst")
         self.visit(node.condition, symbols)
-        self.visit(node.instruction, symbols)
+        self.visit(node.instruction, new_scope)
 
     def visit_IfElseInstruction(self, node, symbols):
         #node.condition.lineno = node.lineno
+        new_scope = SymbolTable.SymbolTable(symbols, "compinst")
         self.visit(node.condition, symbols)
-        self.visit(node.instruction, symbols)
-        self.visit(node.no_instruction, symbols)
+        self.visit(node.instruction, new_scope)
+        self.visit(node.no_instruction, new_scope)
 
     def visit_Assignment(self, node, symbols):
         try:
