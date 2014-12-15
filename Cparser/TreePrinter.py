@@ -12,6 +12,9 @@ def addToClass(cls):
 
 
 class TreePrinter:
+    def __init__(self):
+        pass
+
     @staticmethod
     def addLevel(object):
         return "| " + "\n| ".join(str(object).split('\n'))
@@ -19,6 +22,10 @@ class TreePrinter:
     @addToClass(AST.Node)
     def printTree(self):
         raise Exception("printTree not defined in class " + self.__class__.__name__)
+
+    @addToClass(AST.Program)
+    def printTree(self):
+        return str(self.declarations) + str(self.fundefs) + str(self.instructions)
 
     @addToClass(AST.List)
     def printTree(self):
@@ -33,6 +40,15 @@ class TreePrinter:
         result += TreePrinter.addLevel(self.body)
         return result
 
+    @addToClass(AST.Program)
+    def printTree(self):
+        result = str(self.declarations) + '\n'
+        if len(self.fundefs.elements):
+            result += str(self.fundefs) + '\n'
+        if len(self.instructions.elements):
+            result += str(self.instructions) + '\n'
+        return result
+
     @addToClass(AST.Argument)
     def printTree(self):
         return "ARG {0}".format(self.id)
@@ -40,7 +56,7 @@ class TreePrinter:
 
     @addToClass(AST.CompoundInstruction)
     def printTree(self):
-        result = str(self.decList)
+        result = str(self.decList) + "\n"
         result += str(self.incList)
         return result
 
@@ -82,14 +98,14 @@ class TreePrinter:
     @addToClass(AST.WhileLoopInstruction)
     def printTree(self):
         result = "WHILE\n"
-        result += TreePrinter.addLevel(self.condition) +'\n'
+        result += TreePrinter.addLevel(self.condition) + '\n'
         result += TreePrinter.addLevel(self.instructions)
         return result
 
     @addToClass(AST.RepeatLoopInstruction)
     def printTree(self):
         result = "REPEAT\n"
-        result += TreePrinter.addLevel(self.instructions)+"\n"
+        result += TreePrinter.addLevel(self.instructions) + "\n"
         result += "UNTIL\n"
         result += TreePrinter.addLevel(self.condition)
         return result
@@ -105,13 +121,18 @@ class TreePrinter:
         result = self.value
         return result
 
+    @addToClass(AST.ID)
+    def printTree(self):
+        result = self.id
+        return result
+
     @addToClass(AST.BreakInstruction)
     def printTree(self):
-        return "BREAK\n"
+        return "BREAK"
 
     @addToClass(AST.ContinueInstruction)
     def printTree(self):
-        return "CONTINUE\n"
+        return "CONTINUE"
 
     @addToClass(AST.IfInstruction)
     def printTree(self):
@@ -123,6 +144,6 @@ class TreePrinter:
     @addToClass(AST.LabeledInstruction)
     def printTree(self):
         result = "LABEL "
-        result += self.label+"\n"
+        result += self.label + "\n"
         result += TreePrinter.addLevel(self.instruction)
         return result
