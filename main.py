@@ -8,7 +8,7 @@ import os
 
 
 if __name__ == '__main__':
-    os.sys.setrecursionlimit(2000)
+    os.sys.setrecursionlimit(5000)
     filename = sys.argv[1] if len(sys.argv) > 1 else "example.txt"
 
     try:
@@ -25,6 +25,7 @@ if __name__ == '__main__':
     typeChecker = TypeChecker()
     typeChecker.visit(result, None)  # or alternatively ast.accept(typeChecker)
 
-    result.accept(Interpreter())
+    #print(result)
+    #result.accept(Interpreter())
 
 

@@ -5,7 +5,7 @@ class Node(object):
     def setLineNo(self, line):
         self.lineno = line
 
-    def accept(self, visitor, scope="main"):
+    def accept(self, visitor, scope=0):
         return visitor.visit(self, scope)
 
 

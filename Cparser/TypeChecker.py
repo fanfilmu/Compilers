@@ -89,7 +89,7 @@ class TypeChecker(NodeVisitor):
         try:
             return ttype[op][type1][type2]
         except KeyError:
-            error_str = "Semantic error at line {0}\n"
+            error_str = "Semantic error at line {0} - wrong binary expression\n"
             print(error_str.format(node.lineno))
             return None
 
@@ -100,7 +100,7 @@ class TypeChecker(NodeVisitor):
         try:
             return ttype[op][type1][type2]
         except KeyError:
-            error_str = "Semantic error at line {0}\n"
+            error_str = "Semantic error at line {0} - wrong relational expression\n"
             print(error_str.format(node.lineno))
             return None
 
@@ -114,8 +114,8 @@ class TypeChecker(NodeVisitor):
 
     def visit_Init(self, node, symbols):
         if node.left in symbols.symbols.keys():
-            error_str = "Semantic error at line {0}\n"
-            print(error_str.format(node.lineno))
+            error_str = "Semantic error at line {0} - already defined {1}\n"
+            print(error_str.format(node.lineno,node.left))
         else:
             symbol = SymbolTable.Symbol(node.left, node.type)
             symbols.put(node.left, symbol)
@@ -123,7 +123,7 @@ class TypeChecker(NodeVisitor):
         try:
             ttype['='][node.type][self.visit(node.right, symbols)]
         except KeyError:
-            error_str = "Semantic error at line {0}\n"
+            error_str = "Semantic error at line {0} - invalid initialization\n"
             print(error_str.format(node.lineno))
             return None
 
@@ -140,8 +140,8 @@ class TypeChecker(NodeVisitor):
             argList.append(a)
 
         if node.id in symbols.symbols.keys():
-            error_str = "Semantic error at line {0}\n"
-            print(error_str.format(node.lineno))
+            error_str = "Semantic error at line {0} - function {1} already declared\n"
+            print(error_str.format(node.lineno,node.id))
         else:
             symbol = SymbolTable.FunctionSymbol(node.id, node.retType, dict(argList))
             symbols.put(node.id, symbol)
@@ -192,7 +192,7 @@ class TypeChecker(NodeVisitor):
         try:
             ttype['='][symbols.get(node.left).type][self.visit(node.right, symbols)]
         except KeyError:
-            error_str = "Semantic error at line {0}\n"
+            error_str = "Semantic error at line {0} - wrong assignement\n"
             print(error_str.format(node.lineno))
             return None
 
@@ -200,22 +200,28 @@ class TypeChecker(NodeVisitor):
         if symbols.get(node.id):
             return symbols.get(node.id).type
         else:
-            error_str = "Semantic error at line {0}\n"
+            error_str = "Semantic error at line {0} - variable not defined\n"
             print(error_str.format(node.lineno))
             return None
 
     def visit_FunctionCall(self, node, symbols):
         symbol = symbols.get(str(node.id))
         if symbol:
-            for argtype, arg in zip(symbol.arguments, node.arglist.elements):
-                try:
-                    ttype['='][symbol.arguments[argtype]][self.visit(arg, symbols)]
-                except KeyError:
-                    error_str = "Semantic error at line {0}\n"
-                    print(error_str.format(node.lineno))
+            expected = len(node.arglist.elements)
+            given = len(symbol.arguments)
+            if expected != given:
+                print("Incorrect amount of arguments. Expected: {0}, given: {1} in line: {2}".format(expected, given, node.lineno))
+            else:
+                for argtype, arg in zip(symbol.arguments, node.arglist.elements):
+                    try:
+                        ttype['='][symbol.arguments[argtype]][self.visit(arg, symbols)]
+                    except KeyError:
+                        error_str = "Semantic error at line {0} - wrong argument type\n"
+                        print(error_str.format(node.lineno))
 
             return symbols.get(str(node.id)).type
         else:
+            print("Function not defined")
             return False
 
     def visit_Integer(self, node, symbols):
