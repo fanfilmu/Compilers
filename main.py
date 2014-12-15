@@ -4,9 +4,11 @@ import Cparser.TreePrinter
 from Cparser.Cparser import Cparser
 from Cparser.TypeChecker import TypeChecker
 from Cparser.Interpreter import Interpreter
+import os
 
 
 if __name__ == '__main__':
+    os.sys.setrecursionlimit(2000)
     filename = sys.argv[1] if len(sys.argv) > 1 else "example.txt"
 
     try:

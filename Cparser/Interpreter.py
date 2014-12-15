@@ -62,7 +62,6 @@ class Interpreter(object):
             try:
                 node.body.accept(self, scope=new_scope)
             except ReturnValueException as e:
-                self.memory_stack[new_scope] = None
                 return e.value
 
         self.memory_stack[scope][node.id] = fun
@@ -89,7 +88,7 @@ class Interpreter(object):
 
         if isinstance(left, str):
             left = "\"{}\"".format(left)
-        if isinstance(left, str):
+        if isinstance(right, str):
             right = "\"{}\"".format(right)
 
         return eval("{0} {1} {2}".format(left, node.op, right))
