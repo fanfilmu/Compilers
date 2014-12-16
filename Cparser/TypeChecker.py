@@ -166,6 +166,22 @@ class TypeChecker(NodeVisitor):
         for inst in node.elements:
             self.visit(inst, symbols)
 
+    def visit_BreakInstruction(self,node,symbols):
+        if symbols.checkIfLoop():
+            return True
+        else:
+            error_str = "Semantic error at line {0} - break instruction called but no loop\n"
+            print(error_str.format(node.lineno))
+            return None
+
+    def visit_ContinueInstruction(self,node,symbols):
+        if symbols.checkIfLoop():
+            return True
+        else:
+            error_str = "Semantic error at line {0} - continue instruction called but no loop\n"
+            print(error_str.format(node.lineno))
+            return None
+
     def visit_PrintInstruction(self, node, symbols):
         self.visit(node.expr, symbols)
 

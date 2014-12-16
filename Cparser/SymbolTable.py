@@ -40,6 +40,14 @@ class SymbolTable(object):
         else:
             return None
 
+    def checkIfLoop(self):
+        if "loop" in self.name:
+            return True
+        elif self.parent:
+            return self.parent.checkIfLoop()
+        else:
+            return False
+
 
 
 
