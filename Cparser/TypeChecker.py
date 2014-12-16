@@ -89,7 +89,7 @@ class TypeChecker(NodeVisitor):
         try:
             return ttype[op][type1][type2]
         except KeyError:
-            error_str = "Semantic error at line {0} - wrong binary expression\n"
+            error_str = "Semantic error at line {0} - wrong binary expression"
             print(error_str.format(node.lineno))
             return None
 
@@ -100,7 +100,7 @@ class TypeChecker(NodeVisitor):
         try:
             return ttype[op][type1][type2]
         except KeyError:
-            error_str = "Semantic error at line {0} - wrong relational expression\n"
+            error_str = "Semantic error at line {0} - wrong relational expression"
             print(error_str.format(node.lineno))
             return None
 
@@ -114,7 +114,7 @@ class TypeChecker(NodeVisitor):
 
     def visit_Init(self, node, symbols):
         if node.left in symbols.symbols.keys():
-            error_str = "Semantic error at line {0} - already defined {1}\n"
+            error_str = "Semantic error at line {0} - already defined {1}"
             print(error_str.format(node.lineno,node.left))
         else:
             symbol = SymbolTable.Symbol(node.left, node.type)
@@ -123,7 +123,7 @@ class TypeChecker(NodeVisitor):
         try:
             ttype['='][node.type][self.visit(node.right, symbols)]
         except KeyError:
-            error_str = "Semantic error at line {0} - invalid initialization\n"
+            error_str = "Semantic error at line {0} - invalid initialization"
             print(error_str.format(node.lineno))
             return None
 
@@ -140,7 +140,7 @@ class TypeChecker(NodeVisitor):
             argList.append(a)
 
         if node.id in symbols.symbols.keys():
-            error_str = "Semantic error at line {0} - function {1} already declared\n"
+            error_str = "Semantic error at line {0} - function {1} already declared"
             print(error_str.format(node.lineno,node.id))
         else:
             symbol = SymbolTable.FunctionSymbol(node.id, node.retType, dict(argList))
@@ -170,7 +170,7 @@ class TypeChecker(NodeVisitor):
         if symbols.checkIfLoop():
             return True
         else:
-            error_str = "Semantic error at line {0} - break instruction called but no loop\n"
+            error_str = "Semantic error at line {0} - break instruction called outside of loop"
             print(error_str.format(node.lineno))
             return None
 
@@ -178,7 +178,7 @@ class TypeChecker(NodeVisitor):
         if symbols.checkIfLoop():
             return True
         else:
-            error_str = "Semantic error at line {0} - continue instruction called but no loop\n"
+            error_str = "Semantic error at line {0} - continue instruction called outside of loop"
             print(error_str.format(node.lineno))
             return None
 
@@ -189,7 +189,7 @@ class TypeChecker(NodeVisitor):
         try:
             ttype['='][symbols.getFunctionType()][self.visit(node.returns, symbols)]
         except KeyError:
-            error_str = "Semantic error at line {0} - wrong type in return statement\n"
+            error_str = "Semantic error at line {0} - wrong type in return statement"
             print(error_str.format(node.lineno))
             return None
 
@@ -219,7 +219,7 @@ class TypeChecker(NodeVisitor):
         try:
             ttype['='][symbols.get(node.left).type][self.visit(node.right, symbols)]
         except KeyError:
-            error_str = "Semantic error at line {0} - wrong assignement\n"
+            error_str = "Semantic error at line {0} - wrong assignement"
             print(error_str.format(node.lineno))
             return None
 
@@ -227,7 +227,7 @@ class TypeChecker(NodeVisitor):
         if symbols.get(node.id):
             return symbols.get(node.id).type
         else:
-            error_str = "Semantic error at line {0} - variable not defined\n"
+            error_str = "Semantic error at line {0} - variable not defined"
             print(error_str.format(node.lineno))
             return None
 
@@ -243,7 +243,7 @@ class TypeChecker(NodeVisitor):
                     try:
                         ttype['='][symbol.arguments[argtype]][self.visit(arg, symbols)]
                     except KeyError:
-                        error_str = "Semantic error at line {0} - wrong argument type\n"
+                        error_str = "Semantic error at line {0} - wrong argument type"
                         print(error_str.format(node.lineno))
 
             return symbols.get(str(node.id)).type
