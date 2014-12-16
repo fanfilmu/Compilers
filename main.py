@@ -26,6 +26,6 @@ if __name__ == '__main__':
     typeChecker.visit(result, None)  # or alternatively ast.accept(typeChecker)
 
     #print(result)
-    #result.accept(Interpreter())
+    result.accept(Interpreter())
 
 

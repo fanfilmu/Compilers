@@ -28,15 +28,12 @@ class Interpreter(object):
     def __init__(self):
         self.memory_stack = defaultdict(lambda: Memory(self.memory_stack[0]))
         self.memory_stack[0] = Memory()
+        self.curr_stack = 1
 
     def get_scope(self, scope):
-        hash = self.memory_stack.keys()[-1]
-
-        while hash in self.memory_stack.keys():
-            hash = hash + 1
-
-        self.memory_stack[hash] = Memory(self.memory_stack[scope])
-        return hash
+        self.curr_stack += 1
+        self.memory_stack[self.curr_stack] = Memory(self.memory_stack[scope])
+        return self.curr_stack
 
     @on('node')
     def visit(self, node, scope=0):
@@ -107,7 +104,6 @@ class Interpreter(object):
         right = node.right.accept(self, scope)
 
         return optype[node.op](left, right)
-        #eval("{0} {1} {2}".format(left, node.op, right))
 
     @when(AST.Integer)
     def visit(self, node, scope=0):
