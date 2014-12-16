@@ -20,14 +20,16 @@ return res;
 # gcd, iterative
 int gcd2(int a, int b) {
     int c = 0;
-    float d=1;
+
     while( a != 0 ) {
+        float d=1.7;
         c = a;
         a = b % a;
         b = c;
-    }
 
-    return "a";
+        return 1.5;
+    }
+    return a;
 }
 
 

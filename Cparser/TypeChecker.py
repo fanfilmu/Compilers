@@ -154,7 +154,7 @@ class TypeChecker(NodeVisitor):
         return node.id, node.type
 
     def visit_CompoundInstruction(self, node, symbols):
-        if "function" in  symbols.name or symbols.name == "loop":
+        if "function" in  symbols.name or "loop" in symbols.name:
             symbolscope = symbols
         else:
             symbolscope = SymbolTable.SymbolTable(symbols, "compinst")
@@ -170,17 +170,22 @@ class TypeChecker(NodeVisitor):
         self.visit(node.expr, symbols)
 
     def visit_ReturnInstruction(self, node, symbols):
-        if symbols.getFunctionType() == self.visit(node.returns, symbols):
-            return True
-        else:
+        try:
+            ttype['='][symbols.getFunctionType()][self.visit(node.returns, symbols)]
+        except KeyError:
             error_str = "Semantic error at line {0} - wrong type in return statement\n"
             print(error_str.format(node.lineno))
             return None
 
-    def visit_LoopInstruction(self, node, symbols):
+    def visit_WhileLoopInstruction(self, node, symbols):
         loopSymbols = SymbolTable.SymbolTable(symbols, "loop")
-        self.visit(node.instruction, loopSymbols)
         self.visit(node.condition, symbols)
+        self.visit(node.instructions, loopSymbols)
+
+    def visit_RepeatLoopInstruction(self, node, symbols):
+        loopSymbols = SymbolTable.SymbolTable(symbols, "loop")
+        self.visit(node.condition, symbols)
+        self.visit(node.instructions, loopSymbols)
 
     def visit_IfInstruction(self, node, symbols):
         new_scope = SymbolTable.SymbolTable(symbols, "compinst")
