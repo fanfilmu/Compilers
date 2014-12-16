@@ -7,9 +7,9 @@ int gcd(int m, int n) {
 int res = 0;
 if (m!=n) { 
     if (m > n)
-        res = gcd(m-n, n, c);
+        res = gcd(m-n,c);
     else
-        res = gcd(n-m, "a");
+        res = gcd(n-m,n);
 }
 else
     res = m;
@@ -20,15 +20,16 @@ return res;
 # gcd, iterative
 int gcd2(int a, int b) {
     int c = 0;
-
+    float d=1;
     while( a != 0 ) {
         c = a;
         a = b % a;
         b = c;
     }
 
-    return b;
+    return "a";
 }
+
 
 
 int lcm(int a, int b) {

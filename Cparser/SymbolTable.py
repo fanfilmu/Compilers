@@ -32,6 +32,13 @@ class SymbolTable(object):
         except KeyError:
             return self.parent and self.parent.get(name)
 
+    def getFunctionType(self):
+        if "function" in self.name:
+            return self.name.split('_')[1]
+        elif self.parent:
+            return self.parent.getFunctionType()
+        else:
+            return None
 
 
 

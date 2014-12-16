@@ -134,7 +134,7 @@ class TypeChecker(NodeVisitor):
 
     def visit_Function(self, node, symbols):
         argList = []
-        funSymbols = SymbolTable.SymbolTable(symbols, "function")
+        funSymbols = SymbolTable.SymbolTable(symbols, "function_"+node.retType)
         for arg in node.arglist.elements:
             a = self.visit(arg, funSymbols)
             argList.append(a)
@@ -154,7 +154,7 @@ class TypeChecker(NodeVisitor):
         return node.id, node.type
 
     def visit_CompoundInstruction(self, node, symbols):
-        if symbols.name == "function":
+        if "function" in  symbols.name or symbols.name == "loop":
             symbolscope = symbols
         else:
             symbolscope = SymbolTable.SymbolTable(symbols, "compinst")
@@ -170,10 +170,16 @@ class TypeChecker(NodeVisitor):
         self.visit(node.expr, symbols)
 
     def visit_ReturnInstruction(self, node, symbols):
-        self.visit(node.returns, symbols)
+        if symbols.getFunctionType() == self.visit(node.returns, symbols):
+            return True
+        else:
+            error_str = "Semantic error at line {0} - wrong type in return statement\n"
+            print(error_str.format(node.lineno))
+            return None
 
     def visit_LoopInstruction(self, node, symbols):
-        self.visit(node.instruction, symbols)
+        loopSymbols = SymbolTable.SymbolTable(symbols, "loop")
+        self.visit(node.instruction, loopSymbols)
         self.visit(node.condition, symbols)
 
     def visit_IfInstruction(self, node, symbols):
